@@ -3,7 +3,8 @@
         <div>
             <strong><?= htmlspecialchars($service['name']) ?></strong><br>
             <?= htmlspecialchars($service['description']) ?><br>
-            R$ <?= number_format($service['price'], 2, ',', '.') ?>
+            R$ <?= number_format($service['price'], 2, ',', '.') ?><br>
+            Duracao: <?= $service['duration'] ?> minutos
             <hr>
         </div>
     <?php endforeach; ?>

@@ -1,9 +1,11 @@
 <?php
 
-$pdo = new PDO("mysql:host=localhost", "root", "");
+$pdo = new PDO(
+    "mysql:host=localhost;dbname=estagio_db;charset=utf8",
+    "root",
+    ""
+);
 
-$sql = file_get_contents(__DIR__ . '/init.sql');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$pdo->exec($sql);
-
-echo "Banco inicializado!";
+return $pdo;
