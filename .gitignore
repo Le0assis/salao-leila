@@ -1,0 +1,16 @@
+# dependências
+/vendor
+
+# configs locais
+.env
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+
+# cache IDE
+.vscode/
+.idea/
