@@ -1,23 +1,33 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\Services;
 use App\Models\Appointment;
 use App\Models\AppointmentService;
 
-use Exception;
+use \Exception;
 
 class AppointmentManager
 {
 
     private Appointment $appointmentModel;
     private AppointmentService $appointmentServiceModel;
+    private Services $services;
 
-    public function __construct(Appointment $appointmentModel, AppointmentService $appointmentServiceModel)
-    {
+    public function __construct(
+        Appointment $appointmentModel,
+        AppointmentService $appointmentServiceModel,
+        Services $services
+    ) {
         $this->appointmentModel = $appointmentModel;
         $this->appointmentServiceModel = $appointmentServiceModel;
+        $this->services = $services;
     }
-
+    public function listServices()
+    {
+        return $this->services->getAll();  
+    }
     public function createAppointment($data, $services)
     {
         $appointmentId = $this->appointmentModel->create($data);
@@ -27,13 +37,13 @@ class AppointmentManager
         }
 
     }
-
+    #Verifica se expiro o tempo de edicao do agendamento
     public function canEditAppointment($appointmentId)
     {
         $appointment = $this->appointmentModel->getById($appointmentId);
 
         if (!$appointment) {
-            throw new \Exception("Agendamento não encontrado.");
+            throw new Exception("Agendamento não encontrado.");
         }
 
         $scheduledDate = new \DateTime($appointment['scheduled_at']);
@@ -47,7 +57,7 @@ class AppointmentManager
     public function updateAppointment($id, $data)
     {
         if (!$this->canEditAppointment($id)) {
-            throw new \Exception("Não pode editar com menos de 2 dias de diferença");
+            throw new Exception("Não pode editar com menos de 2 dias de diferença");
         }
 
         return $this->appointmentModel->update($id, $data);
@@ -80,4 +90,15 @@ class AppointmentManager
         return true;
     }
 
+    public function getByService($id)
+    {
+        $appointments = $this->appointmentModel->getByService($id);
+
+        return $appointments;
+    }
+
+    public function getByPeriod($start, $end)
+    {
+       return $this->appointmentModel->getByPeriod($start, $end);
+    }
 }

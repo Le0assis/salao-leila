@@ -21,7 +21,6 @@ class Router
 
     public function dispatch(string $uri, string $httpMethod): void
     {
-        
         $uri = parse_url($uri, PHP_URL_PATH);
 
         $basePath = '/salao-leila/public';
@@ -33,19 +32,26 @@ class Router
             $uri = '/';
         }
 
-        if (isset($this->routes[$httpMethod][$uri])) {
-            $action = $this->routes[$httpMethod][$uri];
+        foreach ($this->routes[$httpMethod] as $route => $action) {
 
-            [$controller, $method] = explode('@', $action);
+            $pattern = preg_replace('/\{[a-zA-Z_]+\}/', '([0-9]+)', $route);
+            $pattern = "#^" . $pattern . "$#";
 
-            require_once __DIR__ . '/../Controllers/' . $controller . '.php';
+            if (preg_match($pattern, $uri, $matches)) {
 
-            $controllerClass = "App\\Controllers\\$controller";
-            $instance = new $controllerClass($this->pdo);
+                array_shift($matches);
 
-            $instance->$method();
+                [$controller, $method] = explode('@', $action);
 
-            return;
+                require_once __DIR__ . '/../Controllers/' . $controller . '.php';
+
+                $controllerClass = "App\\Controllers\\$controller";
+                $instance = new $controllerClass($this->pdo);
+
+                call_user_func_array([$instance, $method], $matches);
+
+                return;
+            }
         }
 
         http_response_code(404);

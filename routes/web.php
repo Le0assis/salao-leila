@@ -5,12 +5,17 @@ return [
         '/' => 'ServiceController@index',
         '/services' => 'ServiceController@index',
         '/services/create' => 'ServiceController@create',
-        '/Appointments/create' => 'AppointmentController@create',
+        '/appointments/create' => 'AppointmentController@create',
+        '/appointments' => 'AppointmentController@index',
+        '/appointments/edit/{id}' => 'AppointmentController@edit',
+        '/appointments/history' => 'AppointmentController@history'
+
     ],
 
     'POST' => [
         '/services/store' => 'ServiceController@store',
-        '/Appointments/store' => 'AppointmentController@store'
+        '/appointments/store' => 'AppointmentController@store',
+        '/appointments/update/{id}' => 'AppointmentController@update',
         
     ]
 ];

@@ -8,13 +8,17 @@
 </head>
 
 <body>
-    <form method="POST" action="/salao-leila/public/Appointments/store">
-        <input type="text" name="name" placeholder="Nome do serviço">
+    <form method="POST" action="/salao-leila/public/appointments/store">
 
-        <input type="text" name="description" placeholder="descrição">
-        <input type="number" name="duration" placeholder="duração">
-        <input type="number" name="price" placeholder="preço">
+        <input type="text" name="notes" placeholder="comeentario">
+        <input type="date" name="scheduled_at">
 
+        <?php foreach ($services as $service): ?>
+            <label>
+                <input type="checkbox" name="services[]" value="<?= $service['id'] ?>">
+                <?= $service['name'] ?>
+            </label><br>
+        <?php endforeach; ?>
         <button type="submit">Salvar</button>
     </form>
 </body>
