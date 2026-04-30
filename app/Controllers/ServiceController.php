@@ -20,4 +20,18 @@ class ServiceController
 
         require __DIR__ . '/../Views/services/index.php';
     }
+
+    public function create()
+    {
+        require __DIR__ . '/../Views/Services/create.php';
+    }
+
+    public function store()
+    {
+        $data = $_POST;
+
+        $this->serviceModel->create($data);
+
+        require __DIR__ . '/../Views/services/index.php';
+    } 
 }

@@ -16,7 +16,7 @@ Class Services {
     public function create($data)
     {
         $stmt = $this->pdo->prepare("
-            INSERT INTO service
+            INSERT INTO services
             (name, description, duration, price, active)
             VALUES (?, ?, ?, ?, ?)
         ");
@@ -26,7 +26,7 @@ Class Services {
             $data['description'],
             $data['duration'],
             $data['price'],
-            $data['active']
+            True
         ]);
     }
 
