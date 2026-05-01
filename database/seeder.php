@@ -1,131 +1,108 @@
 <?php
 
-require_once __DIR__ . '/init_db.php'; // deve retornar o PDO
+require_once __DIR__ . '/init_db.php';
 
-echo "Iniciando seed...\n";
+echo "Iniciando seed grande...\n";
 
 /* =========================
-   USERS
+   USERS (50 usuários)
 ========================= */
 $stmt = $pdo->prepare("
     INSERT INTO users (name, email)
     VALUES (:name, :email)
 ");
 
-$users = [
-    ['name' => 'Maria Silva', 'email' => 'maria@email.com'],
-    ['name' => 'João Souza', 'email' => 'joao@email.com'],
-    ['name' => 'Ana Costa', 'email' => 'ana@email.com'],
-];
-
-foreach ($users as $u) {
-    $stmt->execute($u);
+for ($i = 1; $i <= 50; $i++) {
+    $stmt->execute([
+        'name' => "Cliente $i",
+        'email' => "cliente$i@email.com"
+    ]);
 }
 
-echo "Users inseridos!\n";
+echo "50 users inseridos!\n";
 
 
 /* =========================
-   SERVICES
+   SERVICES (10 serviços)
 ========================= */
 $stmt = $pdo->prepare("
     INSERT INTO services (name, description, duration, price, active)
     VALUES (:name, :description, :duration, :price, :active)
 ");
 
-$services = [
-    [
-        'name' => 'Corte de cabelo',
-        'description' => 'Corte masculino ou feminino',
-        'duration' => 30,
-        'price' => 25.00,
-        'active' => 1
-    ],
-    [
-        'name' => 'Barba',
-        'description' => 'Aparar e modelar barba',
-        'duration' => 20,
-        'price' => 15.00,
-        'active' => 1
-    ],
-    [
-        'name' => 'Sobrancelha',
-        'description' => 'Design de sobrancelha',
-        'duration' => 15,
-        'price' => 10.00,
-        'active' => 1
-    ],
+$servicesList = [
+    ['Corte masculino', 30, 25],
+    ['Corte feminino', 45, 40],
+    ['Barba', 20, 15],
+    ['Sobrancelha', 15, 10],
+    ['Progressiva', 120, 120],
+    ['Hidratação', 40, 35],
+    ['Luzes', 90, 100],
+    ['Coloração', 80, 90],
+    ['Escova', 30, 20],
+    ['Penteado', 60, 70],
 ];
 
-foreach ($services as $s) {
-    $stmt->execute($s);
+foreach ($servicesList as $s) {
+    $stmt->execute([
+        'name' => $s[0],
+        'description' => "Serviço de {$s[0]}",
+        'duration' => $s[1],
+        'price' => $s[2],
+        'active' => 1
+    ]);
 }
 
-echo "Services inseridos!\n";
+echo "10 services inseridos!\n";
 
 
 /* =========================
-   APPOINTMENTS
+   APPOINTMENTS (200 agendamentos)
 ========================= */
 $stmt = $pdo->prepare("
     INSERT INTO appointments (user_id, scheduled_at, status, confirmed, notes)
     VALUES (:user_id, :scheduled_at, :status, :confirmed, :notes)
 ");
 
-$appointments = [
-    [
-        'user_id' => 1,
-        'scheduled_at' => date('Y-m-d H:i:s', strtotime('+1 day')),
-        'status' => 'Agendado',
-        'confirmed' => 1,
-        'notes' => 'Primeiro atendimento'
-    ],
-    [
-        'user_id' => 2,
-        'scheduled_at' => date('Y-m-d H:i:s', strtotime('+2 days')),
-        'status' => 'Agendado',
-        'confirmed' => 0,
-        'notes' => 'Cliente novo'
-    ],
-];
+$statusList = ['Agendado', 'Concluído', 'Cancelado'];
 
-foreach ($appointments as $a) {
-    $stmt->execute($a);
+for ($i = 1; $i <= 200; $i++) {
+
+    $date = date('Y-m-d H:i:s', strtotime(rand(-30, 30) . ' days ' . rand(8, 18) . ':00'));
+
+    $stmt->execute([
+        'user_id' => rand(1, 50),
+        'scheduled_at' => $date,
+        'status' => $statusList[array_rand($statusList)],
+        'confirmed' => rand(0, 1),
+        'notes' => 'Gerado automaticamente'
+    ]);
 }
 
-echo "Appointments inseridos!\n";
+echo "200 appointments inseridos!\n";
 
 
 /* =========================
-   APPOINTMENT SERVICES
+   APPOINTMENT SERVICES (1 a 3 serviços por agendamento)
 ========================= */
 $stmt = $pdo->prepare("
     INSERT INTO appointment_services (appointment_id, service_id, service_status)
     VALUES (:appointment_id, :service_id, :service_status)
 ");
 
-$appointmentServices = [
-    [
-        'appointment_id' => 1,
-        'service_id' => 1,
-        'service_status' => 'Agendado'
-    ],
-    [
-        'appointment_id' => 1,
-        'service_id' => 2,
-        'service_status' => 'Agendado'
-    ],
-    [
-        'appointment_id' => 2,
-        'service_id' => 3,
-        'service_status' => 'Agendado'
-    ],
-];
+for ($i = 1; $i <= 200; $i++) {
 
-foreach ($appointmentServices as $as) {
-    $stmt->execute($as);
+    $qtd = rand(1, 3);
+
+    for ($j = 0; $j < $qtd; $j++) {
+        $stmt->execute([
+            'appointment_id' => $i,
+            'service_id' => rand(1, 10),
+            'service_status' => 'Agendado'
+        ]);
+    }
 }
 
 echo "Appointment services inseridos!\n";
 
-echo "Seed finalizado com sucesso!\n";
+echo "Seed grande finalizado com sucesso!\n";

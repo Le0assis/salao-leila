@@ -1,32 +1,46 @@
-<?php if (!empty($appointments)):
-    foreach ($appointments as $appointment):
-        $total = 0
-            ?>
+<!DOCTYPE html>
+<html lang="en">
 
-        <div>
-            <strong>Cliente ID: <?= $appointment['user_id'] ?></strong><br>
-            Data: <?= $appointment['scheduled_at'] ?><br>
-            Status: <?= $appointment['status'] ?><br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/salao-leila/public/css/appointment-list-style.css">
+    <title>Document</title>
+</head>
 
-            <br><br>
-
-            <strong>Serviços:</strong><br>
-
-            <?php if (!empty($appointment['services'])): ?>
-                <?php foreach ($appointment['services'] as $service): ?>
-                    - <?= $service['name'] ?> (R$ <?= $service['price'] ?>)<br>
-                    <?php $total = $total + $service['price'] ?>
+<body>
+    <?php echo __DIR__ ?>
+    <!-- From Uiverse.io by kamehame-ha -->
+    <?php if (!empty($appointments)): ?>
+        <div class="cards" >
+            <?php foreach ($appointments as $appointment):
+                $total = 0
+                    ?>
+                <div class="card red" class="col s6 m3">
+                    <p class="tip"><?= $appointment['scheduled_at'] ?>, <?= $appointment['status'] ?></p>
+                    <p class="second-text">
+                        <strong>Serviços:</strong><br>
+                        <?php if (!empty($appointment['services'])): ?>
+                            <?php foreach ($appointment['services'] as $service): ?>
+                                - <?= $service['name'] ?> (R$ <?= $service['price'] ?>)<br>
+                                <?php $total = $total + $service['price'] ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            Nenhum serviço vinculado
+                        <?php endif; ?>
+                    </p>
+                    <br>/p>
                 <?php endforeach; ?>
-            <?php else: ?>
-                Nenhum serviço vinculado
-            <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <p>Nenhum serviço encontrado.</p>
+        <?php endif; ?>
 
-            Total: <?= $total ?>
-            <br>
-            <a href="/salao-leila/public/appointments/edit/<?= $appointment['id'] ?>">Editar Agendamento</a>
-            <hr>
-        </div>
-    <?php endforeach; ?>
-<?php else: ?>
-    <p>Nenhum serviço encontrado.</p>
-<?php endif; ?>
+
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</html>
