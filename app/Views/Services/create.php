@@ -1,22 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<section class="content">
+    <div class="container-fluid">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar serviçio</title>
-</head>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
 
-<body>
-    <form method="POST" action="/salao-leila/public/services/store">
-        <input type="text" name="name" placeholder="Nome do serviço">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Criar Serviço</h3>
+                    </div>
 
-        <input type="text" name="description" placeholder="descrição">
-        <input type="number" name="duration" placeholder="duração">
-        <input type="number" name="price" placeholder="preço">
+                    <form method="POST" action="/salao-leila/public/services/store">
+                        <div class="card-body">
 
-        <button type="submit">Salvar</button>
-    </form>
-</body>
+                            <div class="form-group mb-3">
+                                <label for="name">Nome do serviço</label>
+                                <input type="text"
+                                       name="name"
+                                       id="name"
+                                       class="form-control"
+                                       placeholder="Digite o nome do serviço"
+                                       required>
+                            </div>
 
-</html>
+                            <div class="form-group mb-3">
+                                <label for="description">Descrição</label>
+                                <textarea name="description"
+                                          id="description"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Descreva o serviço"></textarea>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="duration">Duração (minutos)</label>
+                                <input type="number"
+                                       name="duration"
+                                       id="duration"
+                                       class="form-control"
+                                       placeholder="Ex: 60"
+                                       required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="price">Preço</label>
+                                <input type="number"
+                                       step="0.01"
+                                       name="price"
+                                       id="price"
+                                       class="form-control"
+                                       placeholder="Ex: 120.00"
+                                       required>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="/salao-leila/public/services"
+                               class="btn btn-secondary">
+                                Cancelar
+                            </a>
+
+                            <button type="submit" class="btn btn-success">
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

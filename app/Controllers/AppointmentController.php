@@ -26,7 +26,6 @@ class AppointmentController
             $service
         );
     }
-
     #Pagina inicial
     public function index()
     {
@@ -37,14 +36,20 @@ class AppointmentController
                 $this->manager->getByService($appointment['id']);
         }
 
-        require __DIR__ . '/../Views/Appointments/index.php';
+        $title = "Agendamentos";
+        $view = __DIR__ . '/../Views/appointments/index.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
+
     }
     #Entra na tela de croiacao de agendamento
     public function create()
     {
         $services = $this->manager->listServices();
 
-        require __DIR__ . '/../Views/Appointments/create.php';
+        $view = __DIR__ . '/../Views/Appointments/create.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
     }
     #Salva o agendamento no banco
     public function store()
@@ -73,6 +78,7 @@ class AppointmentController
         }
 
         exit;
+
     }
     #Puxa o agendamento para ser editado
     public function edit($id)
@@ -84,7 +90,9 @@ class AppointmentController
         }
         $appointment = $this->manager->getAppointmentById($id);
 
-        require __DIR__ . '/../Views/Appointments/edit.php';
+        $view = __DIR__ . '/../Views/Appointments/edit.php';
+        
+        require __DIR__ . '/../Views/layouts/admin.php';
     }
     #Salva as alteracoes no banco
     public function update($id)
@@ -111,12 +119,10 @@ class AppointmentController
     {
         $appointment = $this->manager->getAppointmentById($id);
 
-        require __DIR__ . '/../Views/Appointments/show.php';
+        $view = __DIR__ . '/../Views/Appointments/show.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
     }
-
-
-
-
     #Historico de agendamento
     public function history()
     {
@@ -129,21 +135,39 @@ class AppointmentController
             $appointments = $this->manager->getByPeriod($start, $end);
         }
 
-        require __DIR__ . '/../Views/Appointments/history.php';
-    }
+        foreach ($appointments as &$appointment) {
+            $appointment['services'] =
+                $this->manager->getByService($appointment['id']);
+        }
 
+        $view = __DIR__ . '/../Views/Appointments/index.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
+    }
     public function historyWeek()
     {
         $appointments = $this->manager->getThisWeek();
 
-        require __DIR__ . '/../Views/Appointments/history.php';
-    }
+        foreach ($appointments as &$appointment) {
+            $appointment['services'] =
+                $this->manager->getByService($appointment['id']);
+        }
 
+        $view = __DIR__ . '/../Views/Appointments/index.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
+    }
     public function historyMonth()
     {
         $appointments = $this->manager->getThisMonth();
 
-        require __DIR__ . '/../Views/Appointments/history.php';
+        foreach ($appointments as &$appointment) {
+            $appointment['services'] =
+                $this->manager->getByService($appointment['id']);
+        }
+        $view = __DIR__ . '/../Views/Appointments/index.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
     }
 
 }

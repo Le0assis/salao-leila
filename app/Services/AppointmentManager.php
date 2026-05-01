@@ -115,4 +115,6 @@ class AppointmentManager
     {
         return $this->appointmentModel->findByUserAndWeek($userId, $date);
     }
+
+
 }

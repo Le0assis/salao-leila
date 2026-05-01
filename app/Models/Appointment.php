@@ -131,7 +131,8 @@ class Appointment
 
         $stmt->execute([$userId, $date]);
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
 }

@@ -18,12 +18,21 @@ class ServiceController
     {
         $services = $this->serviceModel->getAll();
 
-        require __DIR__ . '/../Views/services/index.php';
+        $title = "Serviços";
+
+        $view = __DIR__ . '/../Views/services/index.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
     }
 
     public function create()
     {
-        require __DIR__ . '/../Views/Services/create.php';
+
+
+        $view = __DIR__ . '/../Views/services/create.php';
+
+        require __DIR__ . '/../Views/layouts/admin.php';
+
     }
 
     public function store()
@@ -32,6 +41,9 @@ class ServiceController
 
         $this->serviceModel->create($data);
 
-        require __DIR__ . '/../Views/services/index.php';
-    } 
+        $_SESSION['success'] = "Serviço criado com sucesso!";
+        header("Location: /salao-leila/public/services");
+        
+        exit;
+    }
 }

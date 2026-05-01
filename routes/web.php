@@ -2,7 +2,7 @@
 
 return [
     'GET' => [
-        '/' => 'ServiceController@index',
+        '/' => 'AdminController@index',
         '/services' => 'ServiceController@index',
         '/services/create' => 'ServiceController@create',
         '/appointments/create' => 'AppointmentController@create',
@@ -11,7 +11,8 @@ return [
         '/appointments/history' => 'AppointmentController@history',
         '/appointments/history/week' => 'AppointmentController@historyWeek',
         '/appointments/history/month' => 'AppointmentController@historyMonth',
-        '/appointments/show/{id}' => 'AppointmentController@show'
+        '/appointments/show/{id}' => 'AppointmentController@show',
+        '/admin' =>  'AdminController@index'
 
     ],
 

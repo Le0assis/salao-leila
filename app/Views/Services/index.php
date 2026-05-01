@@ -1,56 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Serviços</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="app\Views\Services\index.style.css">
-
-    <title>Document</title>
-</head>
-
-<body>
+    <a href="/salao-leila/public/services/create" class="btn btn-success">
+        Novo Serviço
+    </a>
+</div>
 
 
+<section class="content">
+    <div class="container-fluid">
 
-
-    <?php if (!empty($services)): ?>
-        <div class="row">
-        <?php foreach ($services as $service): ?>
-            <div class="col s3 m3">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title"><?= htmlspecialchars($service['name']) ?></span>
-                        <p><?= htmlspecialchars($service['description']) ?></p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#">R$ <?= number_format($service['price'], 2, ',', '.') ?></a>
-                        <a href="#"><?= $service['duration'] ?> minutos</a>
-                    </div>
-                </div>
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?= $_SESSION['success'] ?>
             </div>
-        <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p>Nenhum serviço encontrado.</p>
-    <?php endif; ?>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
 
+        <?php if (!empty($services)): ?>
+            <div class="row">
+                <?php foreach ($services as $service): ?>
+                    <div class="col-md-4">
 
-    <a href="/salao-leila/public/appointments/create">Marcar horario</a>
-    <br>
-    <a href="/salao-leila/public/appointments">Ver agendamentos</a>
-    <br>
-    <a href="/salao-leila/public/services/create">Criar Serviço</a>
-    <br>
-    <a href="/salao-leila/public/appointments/history">Buscar</a>
+                        <div class="card">
 
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <?= htmlspecialchars($service['name']) ?>
+                                </h3>
+                            </div>
 
+                            <div class="card-body">
+                                <p>
+                                    <?= htmlspecialchars($service['description']) ?>
+                                </p>
+                            </div>
 
-</body>
+                            <div class="card-footer">
+                                <strong>
+                                    R$ <?= number_format($service['price'], 2, ',', '.') ?>
+                                </strong>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+                                <span class="float-right">
+                                    <?= $service['duration'] ?> minutos
+                                </span>
+                            </div>
 
-</html>
+                        </div>
 
-<!-- https://materializecss.com/cards.html -->
+                    </div>
+                <?php endforeach; ?>
+
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info">
+                Nenhum serviço encontrado.
+            </div>
+        <?php endif; ?>
+
+    </div>
+</section>
