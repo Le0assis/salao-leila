@@ -5,7 +5,9 @@
     <input type="date" name="end">
     <button type="submit">Buscar</button>
 </form>
+<a href="/salao-leila/public/appointments/history/week">Agendamentos da Semana</a>
 
+<a href="/salao-leila/public/appointments/history/month">Agendamentos do Mês</a>
 <hr>
 
 <?php foreach ($appointments as $appointment): ?>

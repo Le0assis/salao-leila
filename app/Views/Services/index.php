@@ -41,8 +41,6 @@
     <br>
     <a href="/salao-leila/public/appointments">Ver agendamentos</a>
     <br>
-    <a href="/salao-leila/public/appointments/create">Editar horario</a>
-    <br>
     <a href="/salao-leila/public/services/create">Criar Serviço</a>
     <br>
     <a href="/salao-leila/public/appointments/history">Buscar</a>

@@ -49,25 +49,38 @@ class AppointmentController
     #Salva o agendamento no banco
     public function store()
     {
-        try {
+        $userId = $_POST['user_id'];
+        $date = $_POST['scheduled_at'];
 
-            $data = $_POST;
-            $services = $_POST['services'] ?? [];
+        $existing = $this->manager->checkWeekly($userId, $date);
 
-            $this->manager->createAppointment($data, $services);
+        $message = null;
 
-            header("Location: /salao-leila/public/appointments");
-            exit;
-
-        } catch (Exception $e) {
-            echo "Erro: " . $e->getMessage();
+        if ($existing) {
+            $message = "Agendamento realizado com sucesso. Observação: você já possuía um agendamento nesta mesma semana."
+                . date('d/m/Y H:i', strtotime($existing['scheduled_at']));
         }
+
+        $data = $_POST;
+        $services = $_POST['services'] ?? [];
+
+        $this->manager->createAppointment($data, $services);
+
+        if ($message) {
+            header("Location: /salao-leila/public/appointments?msg=" . urlencode($message));
+        } else {
+            header("Location: /salao-leila/public/appointments");
+        }
+
+        exit;
     }
     #Puxa o agendamento para ser editado
     public function edit($id)
     {
         if (!$this->manager->canEditAppointment($id)) {
-            die("Alteração permitida apenas por telefone.");
+            $_SESSION['error'] = "Alterações com menos de 2 dias devem ser feitas por telefone.";
+            header("Location: /salao-leila/public/appointments");
+            exit;
         }
         $appointment = $this->manager->getAppointmentById($id);
 
@@ -93,6 +106,17 @@ class AppointmentController
         header("Location: /appointments");
         exit;
     }
+
+    public function show($id)
+    {
+        $appointment = $this->manager->getAppointmentById($id);
+
+        require __DIR__ . '/../Views/Appointments/show.php';
+    }
+
+
+
+
     #Historico de agendamento
     public function history()
     {
@@ -104,6 +128,20 @@ class AppointmentController
         if ($start && $end) {
             $appointments = $this->manager->getByPeriod($start, $end);
         }
+
+        require __DIR__ . '/../Views/Appointments/history.php';
+    }
+
+    public function historyWeek()
+    {
+        $appointments = $this->manager->getThisWeek();
+
+        require __DIR__ . '/../Views/Appointments/history.php';
+    }
+
+    public function historyMonth()
+    {
+        $appointments = $this->manager->getThisMonth();
 
         require __DIR__ . '/../Views/Appointments/history.php';
     }

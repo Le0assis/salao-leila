@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use PDO;
+
 class Appointment
 {
     private $pdo;
@@ -33,14 +35,14 @@ class Appointment
     public function getAll()
     {
         $stmt = $this->pdo->query("SELECT * FROM appointments");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM appointments WHERE id = ?");
         $stmt->execute([$id]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getByService($appointmentId)
@@ -54,7 +56,7 @@ class Appointment
 
         $stmt->execute([$appointmentId]);
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function update($id, $data)
@@ -82,17 +84,54 @@ class Appointment
     }
 
     public function getByPeriod($start, $end)
-{
-    $stmt = $this->pdo->prepare("
+    {
+        $stmt = $this->pdo->prepare("
         SELECT * FROM appointments
         WHERE scheduled_at BETWEEN ? AND ?
         ORDER BY scheduled_at DESC
     ");
 
-    $stmt->execute([$start, $end]);
+        $stmt->execute([$start, $end]);
 
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getThisWeek()
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT * FROM appointments
+        WHERE YEARWEEK(scheduled_at, 1) = YEARWEEK(CURDATE(), 1)
+    ");
 
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getThisMonth()
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT * FROM appointments
+        WHERE MONTH(scheduled_at) = MONTH(CURDATE())
+        AND YEAR(scheduled_at) = YEAR(CURDATE())
+    ");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findByUserAndWeek($userId, $date)
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT * FROM appointments
+        WHERE user_id = ?
+        AND YEARWEEK(scheduled_at, 1) = YEARWEEK(?, 1)
+        LIMIT 1
+    ");
+
+        $stmt->execute([$userId, $date]);
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
 }

@@ -26,7 +26,7 @@ class AppointmentManager
     }
     public function listServices()
     {
-        return $this->services->getAll();  
+        return $this->services->getAll();
     }
     public function createAppointment($data, $services)
     {
@@ -99,6 +99,20 @@ class AppointmentManager
 
     public function getByPeriod($start, $end)
     {
-       return $this->appointmentModel->getByPeriod($start, $end);
+        return $this->appointmentModel->getByPeriod($start, $end);
+    }
+    public function getThisWeek()
+    {
+        return $this->appointmentModel->getThisWeek();
+    }
+
+    public function getThisMonth()
+    {
+        return $this->appointmentModel->getThisMonth();
+    }
+
+    public function checkWeekly($userId, $date)
+    {
+        return $this->appointmentModel->findByUserAndWeek($userId, $date);
     }
 }

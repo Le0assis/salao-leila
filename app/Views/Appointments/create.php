@@ -8,10 +8,17 @@
 </head>
 
 <body>
+
+
     <form method="POST" action="/salao-leila/public/appointments/store">
 
-        <input type="text" name="notes" placeholder="comeentario">
-        <input type="date" name="scheduled_at">
+
+
+        <input type="number" name="user_id" placeholder="ID do usuário">
+
+        <input type="text" name="notes" placeholder="Comentário">
+
+        <input type="datetime-local" name="scheduled_at">
 
         <?php foreach ($services as $service): ?>
             <label>
@@ -19,6 +26,7 @@
                 <?= $service['name'] ?>
             </label><br>
         <?php endforeach; ?>
+
         <button type="submit">Salvar</button>
     </form>
 </body>

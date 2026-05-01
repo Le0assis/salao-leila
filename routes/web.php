@@ -8,7 +8,10 @@ return [
         '/appointments/create' => 'AppointmentController@create',
         '/appointments' => 'AppointmentController@index',
         '/appointments/edit/{id}' => 'AppointmentController@edit',
-        '/appointments/history' => 'AppointmentController@history'
+        '/appointments/history' => 'AppointmentController@history',
+        '/appointments/history/week' => 'AppointmentController@historyWeek',
+        '/appointments/history/month' => 'AppointmentController@historyMonth',
+        '/appointments/show/{id}' => 'AppointmentController@show'
 
     ],
 

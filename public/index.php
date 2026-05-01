@@ -2,6 +2,8 @@
 
 use app\Core\Router;
 
+session_start(); 
+
 
 $pdo = require __DIR__ . '/../database/init_db.php';
 
